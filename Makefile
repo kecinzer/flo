@@ -349,7 +349,7 @@ CHECK		= sparse
 CHECKFLAGS     := -D__linux__ -Dlinux -D__STDC__ -Dunix -D__unix__ \
 		  -Wbitwise -Wno-return-void $(CF)
 
-KERNELFLAGS  = -mtune=cortex-a15 -mfpu=neon -fgcse-las -fpredictive-commoning
+KERNELFLAGS  = -munaligned-access -fsingle-precision-constant -fforce-addr -fsched-spec-load -mtune=cortex-a15 -mfpu=neon -fgcse-las -ftree-vectorize -mvectorize-with-neon-quad -funroll-loops -fpredictive-commoning -ffast-math
 MODFLAGS  = -DMODULE $(KERNELFLAGS)
 CFLAGS_MODULE   = $(MODFLAGS)
 AFLAGS_MODULE   = $(MODFLAGS)
@@ -373,8 +373,12 @@ KBUILD_CFLAGS   := -Wall -Wundef -Wstrict-prototypes -Wno-trigraphs \
            -fno-strict-aliasing -fno-common \
            -Werror-implicit-function-declaration \
            -Wno-format-security \
+           -fno-delete-null-pointer-checks \
+           -funswitch-loops -fpredictive-commoning -fgcse-after-reload \
            -Wno-sizeof-pointer-memaccess \
-           -fno-delete-null-pointer-checks
+           -fmodulo-sched -fmodulo-sched-allow-regmoves \
+           -mfpu=neon -mtune=cortex-a15 -fgraphite -floop-parallelize-all \
+           -ftree-loop-linear -floop-interchange -floop-strip-mine -floop-block
 KBUILD_AFLAGS_KERNEL :=
 KBUILD_CFLAGS_KERNEL :=
 KBUILD_AFLAGS   := -D__ASSEMBLY__
