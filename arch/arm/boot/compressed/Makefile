@@ -25,10 +25,11 @@ CFLAGS_decompress.o := -Os
 endif
 FONTC	= $(srctree)/drivers/video/console/font_acorn_8x8.c
 
-#AFLAGS_head.o += -DTEXT_OFFSET=$(TEXT_OFFSET)
-#HEAD	= head.o
-#OBJS	+= misc.o decompress.o
-#FONTC	= $(srctree)/drivers/video/console/font_acorn_8x8.c
+AFLAGS_misc.o +=-Wa,-march=armv7-a$(plus_sec)
+MISC = misc.o
+
+AFLAGS_decompress.o += -Wa,-march=armv7-a$(plus_sec)
+DECOMPRESS = decompress.o
 
 # string library code (-Os is enforced to keep it much smaller)
 OBJS		+= string.o
